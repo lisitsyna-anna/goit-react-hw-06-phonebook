@@ -10,5 +10,6 @@ const filterSlice = createSlice({
   },
 });
 
+// Экспортируем генераторы экшенов и редюсер
 export const { setFilter } = filterSlice.actions;
 export const filterReducer = filterSlice.reducer;
