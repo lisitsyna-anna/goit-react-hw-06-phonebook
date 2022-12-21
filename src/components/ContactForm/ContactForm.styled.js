@@ -19,7 +19,6 @@ export const Label = styled.label`
 export const Input = styled.input`
   width: 350px;
   padding: ${p => p.theme.space[3]}px;
-
   border: 1px solid rgba(33, 33, 33, 0.2);
   border-radius: ${p => p.theme.radii.normal};
 

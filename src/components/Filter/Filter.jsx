@@ -1,11 +1,16 @@
-import PropTypes from 'prop-types';
+import { HiSearch } from 'react-icons/hi';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFilter } from 'redux/filterSlice';
+import { getFilter } from 'redux/selectors';
 
 import { nanoid } from 'nanoid';
 import { Container } from 'components/Container';
 import { Label, Input } from './Filter.styled';
 
-export const Filter = ({ value, onChange, icon: Icon = null }) => {
+export const Filter = () => {
   const filterId = nanoid();
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
   return (
     <Container
       as="div"
@@ -14,15 +19,15 @@ export const Filter = ({ value, onChange, icon: Icon = null }) => {
       justifyContent="center"
     >
       <Label htmlFor={filterId}>
-        {Icon && <Icon size={16} />}
+        <HiSearch />
         Find contacts by name
       </Label>
-      <Input type="text" value={value} onChange={onChange} id={filterId} />
+      <Input
+        type="text"
+        value={filter}
+        onChange={e => dispatch(setFilter(e.target.value))}
+        id={filterId}
+      />
     </Container>
   );
-};
-
-Filter.propTypes = {
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
 };

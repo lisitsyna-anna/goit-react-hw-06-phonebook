@@ -1,15 +1,19 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { addNewContact } from 'redux/constactsSlice';
+import { getContacts } from 'redux/selectors';
 
+import { Notify } from 'notiflix';
 import { Form, Label, Input, Button } from './ContactForm.styled';
 
-export function ContactForm({ onSubmit }) {
+export function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     const { name, value } = e.target;
-
     switch (name) {
       case 'name':
         setName(value);
@@ -27,10 +31,21 @@ export function ContactForm({ onSubmit }) {
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (onSubmit(name, number)) {
-      setName('');
-      setNumber('');
+    const isNameAdded = contacts.some(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+    const isNumberAdded = contacts.some(contact => contact.number === number);
+
+    if (isNameAdded) {
+      Notify.failure(`${name} is alredy in contacts`);
+      return;
+    } else if (isNumberAdded) {
+      Notify.failure(`${number} is alredy in contacts`);
+      return;
     }
+    dispatch(addNewContact(name, number));
+    setName('');
+    setNumber('');
   };
 
   return (
@@ -69,7 +84,3 @@ export function ContactForm({ onSubmit }) {
     </Form>
   );
 }
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};

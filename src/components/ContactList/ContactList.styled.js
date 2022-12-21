@@ -12,3 +12,7 @@ export const Item = styled.li`
   align-items: center;
   justify-content: space-between;
 `;
+
+export const FailureText = styled.p`
+  text-align: center;
+`;
